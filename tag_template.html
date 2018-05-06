@@ -1,0 +1,10 @@
+<html>
+<body>
+  <h1>Recipes</h1>
+  <ul>
+  {% for f in files %}
+    <li><a href="{{ f }}">{{ f }}</a></li>
+  {% endfor %}
+  </ul>
+</body>
+</html>
