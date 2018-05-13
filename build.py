@@ -12,6 +12,7 @@ from glob import glob
 import os
 import subprocess
 from jinja2 import Environment, FileSystemLoader, select_autoescape
+import re
 
 
 def files_in(directory, extension):
@@ -65,6 +66,26 @@ def build_tag_indexes(directory, destination):
                 html_files.append(htmlFile)
             out_file.write(make_webpage(html_files))
 
+def build_gallery(directory, destination):
+    # TODO tidy this up
+    gallery_data = []
+    for markdownFile in glob(os.path.join(directory, '*.md')):
+        with open(markdownFile) as f:
+            for line in f:
+                if '![' in line:
+                    match = re.search(r'\((.*)\)', line)
+                    (root, htmlFile) = os.path.split(markdownFile.replace('.md', '.html'))
+                    gallery_data.append( [htmlFile, match.group(1) ])
+
+    with open('test_gal.html', 'w') as out_file:
+        env = Environment(
+            loader=FileSystemLoader('.'),
+            autoescape=select_autoescape(['html', 'xml'])
+        )
+        template = env.get_template('gallery.html')
+        out_file.write(template.render(images=gallery_data))
+
+
 def tagged_files_in(directory, tag):
     for markdownFile in glob(os.path.join(directory, '*.md')):
         with open(markdownFile) as f:
@@ -79,7 +100,7 @@ def make_webpage(filenames):
         loader=FileSystemLoader('.'),
         autoescape=select_autoescape(['html', 'xml'])
     )
-    template = env.get_template('food.html')
+    template = env.get_template('tag_template.html')
     return template.render(files=filenames)
 
 if __name__ == '__main__':
@@ -89,3 +110,4 @@ if __name__ == '__main__':
     convert_all_files(base_directory, destination)
     copy_assets(base_directory, assets, destination)
     build_tag_indexes(base_directory, destination)
+    build_gallery(base_directory, destination)
