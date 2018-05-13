@@ -1,13 +1,3 @@
-# Main build script should:
-#
-# (putting everything in \build)
-# Use pandoc for markdown to html conversion
-# Copy static assets
-# Run tag index generation
-# Run stats
-# Run plotting
-# Build an index page
-
 from glob import glob
 import os
 import subprocess
@@ -28,13 +18,21 @@ def convert_all_files(directory, destination):
         print('Building file ' + markdownFile)
         (_, filename) = os.path.split(markdownFile)
         htmlFile = os.path.join(build_directory, filename.replace('.md', '.html'))
+        with open(markdownFile) as f:
+            input_string = f.read()
+
+        # TODO separate and make this nicer
+        # match = re.findall(r';;([a-z-]+)', input_string)
+        input_string = re.sub(r';;([a-z-]+)', r'<a href="tagged-\1.html">\1</h2>', input_string)
+
         subprocess.run(['pandoc',
-                        markdownFile,
                         '-f', 'markdown',
                         '-t', 'html',
                         '-s', '-o', htmlFile,
                         '--css', '../assets/css/tufte.css',
-                        '--css', '../assets/css/custom.css'])
+                        '--css', '../assets/css/custom.css'],
+                        input=input_string,
+                        encoding='utf-8')
 
 def copy_assets(root, name, destination):
     source_location = os.path.join(root, name)
