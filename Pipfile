@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 pygal = "*"
 "jinja2" = "*"
+pytest = "*"
 
 [dev-packages]
 
