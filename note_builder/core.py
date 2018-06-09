@@ -13,6 +13,10 @@ def make_note(note_path):
     content = read_content(note_path)
     return Note(name, content)
 
+def make_notes(note_paths):
+    for note_path in note_paths:
+        yield make_note(note_path)
+
 def name_from_path(path):
     (_, filename) = os.path.split(path)
     return filename.strip('.md' )
@@ -22,8 +26,7 @@ def read_content(path):
         return note_file.read()
 
 def load_notes(note_files):
-    for note_file in note_files:
-        yield make_note(note_file)
+    return [make_note(note_file) for note_file in note_files]
 
 def render_to_file(content, filename):
     result = subprocess.run(['pandoc',
@@ -40,6 +43,7 @@ class HtmlRenderer(object):
     def __init__(self, output_directory):
         self.output_directory = output_directory
 
-    def render(self, note):
-        note_destination = os.path.join(self.output_directory, note.name + '.html')
-        render_to_file(note.content, note_destination)
+    def render(self, notes):
+        for note in notes:
+            note_destination = os.path.join(self.output_directory, note.name + '.html')
+            render_to_file(note.content, note_destination)
