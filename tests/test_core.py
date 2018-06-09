@@ -24,7 +24,7 @@ def test_load_multiple_notes(datadir):
     note_files = note_builder.find_notes(datadir)
     expected_names = ['note_1', 'note_2']
 
-    notes = note_builder.make_notes(note_files)
+    notes = note_builder.load_notes(note_files)
 
     assert len(list(notes)) == 2
     for note, name in zip(notes, expected_names):
@@ -58,7 +58,7 @@ def test_html_content_no_style(datadir):
 
 def test_html_renderer_note_iterable(datadir):
     note_files = note_builder.find_notes(datadir)
-    notes = note_builder.make_notes(note_files)
+    notes = note_builder.load_notes(note_files)
     renderer = note_builder.HtmlRenderer(output_directory=datadir)
 
     renderer.render(notes)
