@@ -8,4 +8,4 @@ It will also:
  - Generate index pages for tags
  - Convert my custom tag syntax to links to the index pages
  - Generate a gallery page
- - (one day) analyse link structure between notes
+ - (one day) analyse link structure between notes, and check for missing
