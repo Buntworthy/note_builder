@@ -6,8 +6,9 @@ def test_measure():
 
     measurements = note_builder.processors.measure(content)
 
-    assert measurements.num_lines == 2
-    assert measurements.num_words == 4
+    assert measurements.notes == 1
+    assert measurements.lines == 2
+    assert measurements.words == 4
 
 
 def test_remove_special_characters():
@@ -16,8 +17,9 @@ def test_remove_special_characters():
 
     measurements = note_builder.processors.measure(content)
 
-    assert measurements.num_lines == 2
-    assert measurements.num_words == 4
+    assert measurements.notes == 1
+    assert measurements.lines == 2
+    assert measurements.words == 4
 
 def test_measure_notes():
 
@@ -28,5 +30,6 @@ def test_measure_notes():
     note_list = [note1, note2]
 
     measurements = note_builder.processors.measure_notes(note_list)
-    assert measurements.num_lines == 4
-    assert measurements.num_words == 8
+    assert measurements.notes == 2
+    assert measurements.lines == 4
+    assert measurements.words == 8
