@@ -1,5 +1,8 @@
 from collections import namedtuple
 import re
+from datetime import datetime
+
+import tinydb
 
 Measurement = namedtuple('Measurement', ['notes', 'lines', 'words'])
 
@@ -32,3 +35,23 @@ def measure_notes(notes):
         all_words += note_measurement.words
 
     return Measurement(all_notes, all_lines, all_words)
+
+class Quantifier(object):
+
+    def __init__(self, db_path):
+        self.db_path = db_path
+
+    def process(self, notes):
+        measurement = measure_notes(notes)
+        self.record(measurement)
+
+    def record(self, measurement):
+            db = tinydb.TinyDB(self.db_path)
+            now = datetime.now()
+            time_format = '%Y-%m-%d %H:%M:%S'
+            db.insert({
+                'time': now.strftime(time_format),
+                'notes': measurement.notes,
+                'lines': measurement.lines,
+                'words': measurement.words,
+            })
