@@ -35,6 +35,16 @@ def test_measure_notes():
     assert measurements.lines == 4
     assert measurements.words == 8
 
+def test_measurement_db(tmpdir):
+    test_db = tmpdir.mkdir('db').join('test.db')
+    measurement = note_builder.processors.Measurement(1, 2, 3)
+    db = note_builder.processors.MeasurementDb(test_db)
+
+    db.record(measurement)
+    loaded_measurement = db.load()
+
+    assert len(loaded_measurement) == 1
+
 def test_quantifier(tmpdir):
     note1 = note_builder.Note(name='note_1',
                                 content = '# Note 1\n\ncontent\n')
@@ -45,6 +55,3 @@ def test_quantifier(tmpdir):
     quantifier = note_builder.processors.Quantifier(test_db)
 
     quantifier.process(note_list)
-
-    assert quantifier.db_path == test_db
-    assert os.path.isfile(quantifier.db_path)

@@ -36,22 +36,39 @@ def measure_notes(notes):
 
     return Measurement(all_notes, all_lines, all_words)
 
-class Quantifier(object):
+class MeasurementDb(object):
 
     def __init__(self, db_path):
         self.db_path = db_path
+        self.db = tinydb.TinyDB(self.db_path)
+        self.time_format = '%Y-%m-%d %H:%M:%S'
+
+    def record(self, measurement):
+        now = datetime.now()
+        self.db.insert({
+            'time': now.strftime(self.time_format),
+            'notes': measurement.notes,
+            'lines': measurement.lines,
+            'words': measurement.words,
+        })
+
+    def load(self):
+        db_contents = self.db.all()
+        all_measurements = []
+        
+        for entry in db_contents:
+            time = datetime.strptime(entry['time'], self.time_format)
+            measurement = Measurement(entry['notes'], entry['lines'], entry['words'])
+            all_measurements.append((time, measurement))
+
+        return all_measurements
+
+
+class Quantifier(object):
+
+    def __init__(self, db_path):
+        self.db = MeasurementDb(db_path)
 
     def process(self, notes):
         measurement = measure_notes(notes)
-        self.record(measurement)
-
-    def record(self, measurement):
-            db = tinydb.TinyDB(self.db_path)
-            now = datetime.now()
-            time_format = '%Y-%m-%d %H:%M:%S'
-            db.insert({
-                'time': now.strftime(time_format),
-                'notes': measurement.notes,
-                'lines': measurement.lines,
-                'words': measurement.words,
-            })
+        self.db.record(measurement)
