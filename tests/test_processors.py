@@ -41,9 +41,34 @@ def test_measurement_db(tmpdir):
     db = note_builder.processors.MeasurementDb(test_db)
 
     db.record(measurement)
-    loaded_measurement = db.load()
+    loaded = db.load()
 
-    assert len(loaded_measurement) == 1
+    assert len(loaded) == 1
+
+    (_, loaded_measurement) = loaded[0]
+    assert loaded_measurement == measurement
+
+def test_measurement_db_existing(tmpdir):
+    test_db = tmpdir.mkdir('db').join('test.db')
+    measurement1 = note_builder.processors.Measurement(1, 2, 3)
+    measurement2 = note_builder.processors.Measurement(30, 20, 10)
+    db = note_builder.processors.MeasurementDb(test_db)
+    db.record(measurement1)
+
+    del db
+
+    new_db = note_builder.processors.MeasurementDb(test_db)
+    new_db.record(measurement2)
+
+    loaded = new_db.load()
+
+    assert len(loaded) == 2
+
+    (_, loaded_measurement1) = loaded[0]
+    (_, loaded_measurement2) = loaded[1]
+    assert loaded_measurement1 == measurement1
+    assert loaded_measurement2 == measurement2
+
 
 def test_quantifier(tmpdir):
     note1 = note_builder.Note(name='note_1',
