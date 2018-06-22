@@ -1,8 +1,11 @@
 from collections import namedtuple
 import re
+import os
 from datetime import datetime
 
 import tinydb
+import pygal
+from jinja2 import Environment, PackageLoader, select_autoescape
 
 Measurement = namedtuple('Measurement', ['notes', 'lines', 'words'])
 
@@ -55,7 +58,7 @@ class MeasurementDb(object):
     def load(self):
         db_contents = self.db.all()
         all_measurements = []
-        
+
         for entry in db_contents:
             time = datetime.strptime(entry['time'], self.time_format)
             measurement = Measurement(entry['notes'], entry['lines'], entry['words'])
@@ -67,8 +70,47 @@ class MeasurementDb(object):
 class Quantifier(object):
 
     def __init__(self, db_path):
+        self.output_name = 'statistics.html'
         self.db = MeasurementDb(db_path)
+
+        self.statistics = {
+            'Total Notes': lambda data: [(t, x.notes) for (t, x) in data],
+            'Total Lines': lambda data: [(t, x.lines) for (t, x) in data],
+            'Lines per Note': lambda data: [(t, x.lines/x.notes) for (t, x) in data],
+            'Total Words': lambda data: [(t, x.words) for (t, x) in data],
+            'Words per note': lambda data: [(t, x.words/x.notes) for (t, x) in data],
+        }
 
     def process(self, notes):
         measurement = measure_notes(notes)
         self.db.record(measurement)
+
+    def render(self, directory):
+        data = self.db.load()
+        graph_names = []
+
+        for (name, func) in self.statistics.items():
+            filepath = os.path.join(directory, name + '.svg')
+            graph_names.append(filepath)
+            self._make_chart(filepath, name, func(data))
+
+        self._make_html(directory, graph_names)
+
+    def _make_chart(self, filepath, title, data):
+        datetimeline = pygal.DateTimeLine(
+            x_label_rotation=35,
+            truncate_label=-1,
+            x_value_formatter=lambda dt: dt.strftime('%d, %b %Y'))
+        datetimeline.title = title
+        datetimeline.add('', data)
+        datetimeline.render_to_file(filepath)
+
+    def _make_html(self, directory, graph_names):
+        output_path = os.path.join(directory, self.output_name)
+        with open(output_path, 'w') as out_file:
+            env = Environment(
+                loader=PackageLoader('note_builder', 'templates'),
+                autoescape=select_autoescape(['html', 'xml'])
+            )
+            template = env.get_template('statistics.html')
+            out_file.write(template.render(graphs=graph_names))

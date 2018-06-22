@@ -1,0 +1,12 @@
+<html>
+  <body>
+    <h1>Statistics</h1>
+
+      <figure>
+        {% for graph in graphs %}
+          <embed type="image/svg+xml" src="{{graph}}" />
+        {% endfor %}
+      </figure>
+
+  </body>
+</html>

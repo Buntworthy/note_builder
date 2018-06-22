@@ -80,3 +80,6 @@ def test_quantifier(tmpdir):
     quantifier = note_builder.processors.Quantifier(test_db)
 
     quantifier.process(note_list)
+    quantifier.render(tmpdir)
+
+    assert os.path.isfile(tmpdir.join('statistics.html'))
