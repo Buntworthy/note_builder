@@ -31,13 +31,17 @@ def load_notes(note_files):
 
 class HtmlRenderer(object):
 
-    def __init__(self, output_directory):
+    def __init__(self, output_directory, assets=None):
         self.output_directory = output_directory
+        self.assets_name = 'assets'
+        self.assets = assets
 
     def render(self, notes):
         for note in notes:
             note_destination = os.path.join(self.output_directory, note.name + '.html')
             self.render_to_file(note.content, note_destination)
+        if self.assets:
+            self.copy_assets()
 
     def render_to_file(self, content, filename):
         """Convert note content to html file."""
@@ -48,3 +52,7 @@ class HtmlRenderer(object):
                         input=content,
                         encoding='utf-8',
                         stdout=subprocess.PIPE)
+
+    def copy_assets(self):
+        destination_location = os.path.join(self.output_directory, self.assets_name)
+        subprocess.run(['cp', '-r', self.assets, destination_location])

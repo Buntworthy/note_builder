@@ -62,3 +62,8 @@ def test_html_renderer_note_iterable(datadir):
     renderer = note_builder.HtmlRenderer(output_directory=datadir)
 
     renderer.render(notes)
+
+def test_move_assets(datadir):
+    renderer = note_builder.HtmlRenderer(output_directory=datadir.join('build'), assets=datadir.join('assets'))
+
+    renderer.render([])
