@@ -33,6 +33,8 @@ class HtmlRenderer(object):
 
     def __init__(self, output_directory, assets=None):
         self.output_directory = output_directory
+        if not os.path.isdir(self.output_directory):
+            os.makedirs(self.output_directory)
         self.assets_name = 'assets'
         self.assets = assets
 
