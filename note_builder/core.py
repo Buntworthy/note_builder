@@ -18,7 +18,8 @@ def make_note(note_path):
 def name_from_path(path):
     """Convert path to note name."""
     (_, filename) = os.path.split(path)
-    return filename.strip('.md' )
+    (note_name, _) = os.path.splitext(filename)
+    return note_name
 
 def read_content(path):
     """Read contents of note file at location path."""
@@ -40,6 +41,7 @@ class HtmlRenderer(object):
 
     def render(self, notes):
         for note in notes:
+            print('Rendering ' + note.name)
             note_destination = os.path.join(self.output_directory, note.name + '.html')
             self.render_to_file(note.content, note_destination)
         if self.assets:
