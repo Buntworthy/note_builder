@@ -10,6 +10,8 @@ pytest = "*"
 tinydb = "*"
 
 [dev-packages]
+ptpython = "*"
+pycodestyle = "*"
 
 [requires]
 python_version = "3.6"

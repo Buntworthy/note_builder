@@ -11,6 +11,7 @@ Measurement = namedtuple('Measurement', ['notes', 'lines', 'words'])
 
 pattern = re.compile('[^a-zA-Z\d\s:]+', re.UNICODE)
 
+
 def measure(content):
     num_lines = 0
     num_words = 0
@@ -26,6 +27,7 @@ def measure(content):
 
     return Measurement(num_notes, num_lines, num_words)
 
+
 def measure_notes(notes):
     all_lines = 0
     all_words = 0
@@ -38,6 +40,7 @@ def measure_notes(notes):
         all_words += note_measurement.words
 
     return Measurement(all_notes, all_lines, all_words)
+
 
 class MeasurementDb(object):
 
@@ -61,7 +64,9 @@ class MeasurementDb(object):
 
         for entry in db_contents:
             time = datetime.strptime(entry['time'], self.time_format)
-            measurement = Measurement(entry['notes'], entry['lines'], entry['words'])
+            measurement = Measurement(entry['notes'],
+                                      entry['lines'],
+                                      entry['words'])
             all_measurements.append((time, measurement))
 
         return all_measurements
@@ -74,11 +79,16 @@ class Quantifier(object):
         self.db = MeasurementDb(db_path)
 
         self.statistics = {
-            'Total Notes': lambda data: [(t, x.notes) for (t, x) in data],
-            'Total Lines': lambda data: [(t, x.lines) for (t, x) in data],
-            'Lines per Note': lambda data: [(t, x.lines/x.notes) for (t, x) in data],
-            'Total Words': lambda data: [(t, x.words) for (t, x) in data],
-            'Words per note': lambda data: [(t, x.words/x.notes) for (t, x) in data],
+            'Total Notes':
+                lambda data: [(t, x.notes) for (t, x) in data],
+            'Total Lines':
+                lambda data: [(t, x.lines) for (t, x) in data],
+            'Lines per Note':
+                lambda data: [(t, x.lines/x.notes) for (t, x) in data],
+            'Total Words':
+                lambda data: [(t, x.words) for (t, x) in data],
+            'Words per note':
+                lambda data: [(t, x.words/x.notes) for (t, x) in data],
         }
 
     def process(self, notes):
