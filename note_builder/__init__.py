@@ -5,3 +5,4 @@ from .core import HtmlRenderer
 from .core import Note
 
 from . import processors
+from .builder import Builder
