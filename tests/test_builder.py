@@ -42,3 +42,14 @@ def test_transform_notes():
     notes = builder.process(notes)
 
     assert notes == []
+
+
+def test_call_one_renderer():
+    renderer = mock.Mock()
+
+    builder = note_builder.Builder()
+    builder.add_renderer(renderer)
+
+    builder.render('output_directory')
+
+    renderer.render.assert_called_once_with('output_directory')
