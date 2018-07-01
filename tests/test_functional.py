@@ -14,7 +14,7 @@ def test_end_to_end(datadir):
 
     builder.add_processor(quantifier)
     builder.add_renderer(quantifier)
-    builder.process(notes)
-    builder.render(output_dir)
+    notes = builder.process(notes)
+    builder.render(output_dir, notes)
 
     assert os.path.isfile(datadir.join('output').join('statistics.html'))

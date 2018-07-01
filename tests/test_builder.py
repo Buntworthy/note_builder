@@ -50,6 +50,6 @@ def test_call_one_renderer():
     builder = note_builder.Builder()
     builder.add_renderer(renderer)
 
-    builder.render('output_directory')
+    builder.render('output_directory', [])
 
-    renderer.render.assert_called_once_with('output_directory')
+    renderer.render.assert_called_once_with('output_directory', [])

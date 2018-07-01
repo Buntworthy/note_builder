@@ -36,8 +36,8 @@ def test_html_renderer_filename(datadir):
     expected_name = note.name + '.html'
     expected_filename = datadir.join(expected_name)
 
-    renderer = note_builder.HtmlRenderer(output_directory=datadir)
-    renderer.render([note])
+    renderer = note_builder.HtmlRenderer()
+    renderer.render(datadir, [note])
 
     assert os.path.isfile(expected_filename)
 
@@ -48,8 +48,8 @@ def test_html_content_no_style(datadir):
     expected_name = note.name + '.html'
     expected_filename = datadir.join(expected_name)
 
-    renderer = note_builder.HtmlRenderer(output_directory=datadir)
-    renderer.render([note])
+    renderer = note_builder.HtmlRenderer()
+    renderer.render(datadir, [note])
 
     with open(expected_filename) as output_file:
         with open(datadir.join('note_1_ref.html')) as reference_file:
@@ -59,15 +59,15 @@ def test_html_content_no_style(datadir):
 def test_html_renderer_note_iterable(datadir):
     note_files = note_builder.find_notes(datadir)
     notes = note_builder.load_notes(note_files)
-    renderer = note_builder.HtmlRenderer(output_directory=datadir.join('build'))
+    renderer = note_builder.HtmlRenderer()
 
-    renderer.render(notes)
+    renderer.render(datadir.join('build'), notes)
 
     assert os.path.isdir(datadir.join('build'))
 
 def test_move_assets(datadir):
-    renderer = note_builder.HtmlRenderer(output_directory=datadir.join('build'), assets=datadir.join('assets'))
+    renderer = note_builder.HtmlRenderer(assets=datadir.join('assets'))
 
-    renderer.render([])
+    renderer.render(datadir.join('build'), [])
 
     assert os.path.isfile(datadir.join('build').join('assets').join('asset'))

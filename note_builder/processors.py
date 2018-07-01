@@ -95,7 +95,7 @@ class Quantifier(object):
         measurement = measure_notes(notes)
         self.db.record(measurement)
 
-    def render(self, directory):
+    def render(self, directory, _):
         data = self.db.load()
         graph_names = []
 

@@ -18,9 +18,9 @@ class Builder(object):
 
         return notes
 
-    def render(self, directory):
+    def render(self, directory, notes):
         if not os.path.isdir(directory):
             os.mkdir(directory)
-            
+
         for renderer in self.renderers:
-            renderer.render(directory)
+            renderer.render(directory, notes)
