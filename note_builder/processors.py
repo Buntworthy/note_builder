@@ -94,6 +94,7 @@ class Quantifier(object):
     def process(self, notes):
         measurement = measure_notes(notes)
         self.db.record(measurement)
+        return notes
 
     def render(self, directory, _):
         data = self.db.load()

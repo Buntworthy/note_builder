@@ -69,8 +69,20 @@ def test_measurement_db_existing(tmpdir):
     assert loaded_measurement1 == measurement1
     assert loaded_measurement2 == measurement2
 
+def test_quantifier_notes_unchanged(tmpdir):
+    note1 = note_builder.Note(name='note_1',
+                                content = '# Note 1\n\ncontent\n')
+    note2 = note_builder.Note(name='note_2',
+                                content = '# Second Note\nSome new content\n')
+    note_list = [note1, note2]
+    test_db = tmpdir.mkdir('db').join('test.db')
+    quantifier = note_builder.processors.Quantifier(test_db)
 
-def test_quantifier(tmpdir):
+    new_note_list = quantifier.process(note_list)
+
+    assert new_note_list == note_list
+
+def test_quantifier_output(tmpdir):
     note1 = note_builder.Note(name='note_1',
                                 content = '# Note 1\n\ncontent\n')
     note2 = note_builder.Note(name='note_2',

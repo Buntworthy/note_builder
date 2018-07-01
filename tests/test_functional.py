@@ -10,10 +10,13 @@ def test_end_to_end(datadir):
     note_files = note_builder.find_notes(datadir)
     notes = note_builder.load_notes(note_files)
     quantifier = note_builder.processors.Quantifier(test_db)
-    builder = note_builder.Builder()
+    note_renderer = note_builder.HtmlRenderer(assets='assets')
 
+    builder = note_builder.Builder()
     builder.add_processor(quantifier)
     builder.add_renderer(quantifier)
+    builder.add_renderer(note_renderer)
+
     notes = builder.process(notes)
     builder.render(output_dir, notes)
 
