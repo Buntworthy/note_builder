@@ -3,6 +3,7 @@ from .fixtures import datadir
 
 import os
 
+
 def test_end_to_end(datadir):
     output_dir = datadir.join('output')
     test_db = datadir.mkdir('db').join('test.db')

@@ -3,8 +3,8 @@ from .fixtures import datadir
 
 import os
 
-def test_find_notes(datadir):
 
+def test_find_notes(datadir):
     note_files = note_builder.find_notes(datadir)
 
     assert note_files[0] == datadir.join('note_1.md')
@@ -12,13 +12,13 @@ def test_find_notes(datadir):
 
 
 def test_load_single_note(datadir):
-
     note_path = datadir.join('note_1.md')
 
     note = note_builder.make_note(note_path)
 
     assert note.name == 'note_1'
     assert note.content == '# Note 1\n\ncontent\n'
+
 
 def test_load_multiple_notes(datadir):
     note_files = note_builder.find_notes(datadir)
@@ -30,9 +30,9 @@ def test_load_multiple_notes(datadir):
     for note, name in zip(notes, expected_names):
         assert note.name == name
 
-def test_html_renderer_filename(datadir):
 
-    note = note_builder.Note(name='note_1', content = '# Note 1\n\ncontent\n')
+def test_html_renderer_filename(datadir):
+    note = note_builder.Note(name='note_1', content='# Note 1\n\ncontent\n')
     expected_name = note.name + '.html'
     expected_filename = datadir.join(expected_name)
 
@@ -41,8 +41,8 @@ def test_html_renderer_filename(datadir):
 
     assert os.path.isfile(expected_filename)
 
-def test_html_content_no_style(datadir):
 
+def test_html_content_no_style(datadir):
     note_path = datadir.join('note_1.md')
     note = note_builder.make_note(note_path)
     expected_name = note.name + '.html'
@@ -56,6 +56,7 @@ def test_html_content_no_style(datadir):
             for output, reference in zip(output_file, reference_file):
                 assert output == reference
 
+
 def test_html_renderer_note_iterable(datadir):
     note_files = note_builder.find_notes(datadir)
     notes = note_builder.load_notes(note_files)
@@ -64,6 +65,7 @@ def test_html_renderer_note_iterable(datadir):
     renderer.render(datadir.join('build'), notes)
 
     assert os.path.isdir(datadir.join('build'))
+
 
 def test_move_assets(datadir):
     renderer = note_builder.HtmlRenderer(assets=datadir.join('assets'))

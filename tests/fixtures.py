@@ -2,6 +2,7 @@ from distutils import dir_util
 from pytest import fixture
 import os
 
+
 @fixture
 def datadir(tmpdir, request):
     '''

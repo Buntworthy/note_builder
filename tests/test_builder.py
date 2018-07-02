@@ -2,8 +2,8 @@ from .context import note_builder
 
 from unittest import mock
 
-def test_call_one_processor():
 
+def test_call_one_processor():
     processor = mock.Mock()
     notes = mock.Mock()
 
@@ -14,8 +14,8 @@ def test_call_one_processor():
 
     processor.process.assert_called_once_with(notes)
 
-def test_call_two_processors():
 
+def test_call_two_processors():
     processor1 = mock.Mock()
     processor1.process.side_effect = lambda x: x
     processor2 = mock.Mock()
@@ -30,6 +30,7 @@ def test_call_two_processors():
 
     processor1.process.assert_called_once_with(notes)
     processor2.process.assert_called_once_with(notes)
+
 
 def test_transform_notes():
     processor = mock.Mock()
