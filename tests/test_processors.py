@@ -27,8 +27,8 @@ def test_measure_notes():
     note_list = make_test_notes()
     measurements = note_builder.processors.measure_notes(note_list)
     assert measurements.notes == 2
-    assert measurements.lines == 4
-    assert measurements.words == 8
+    assert measurements.lines == 6
+    assert measurements.words == 11
 
 
 def test_measurement_db(tmpdir):
@@ -88,9 +88,29 @@ def test_quantifier_output(tmpdir):
     assert os.path.isfile(tmpdir.join('statistics.html'))
 
 
+def test_tag_index_notes_unchanged():
+    note_list = make_test_notes()
+    tag_index = note_builder.processors.TagIndex()
+
+    new_note_list = tag_index.process(note_list)
+
+    assert new_note_list == note_list
+
+
+def test_tag_index_process():
+    note_list = make_test_notes()
+    tag_index = note_builder.processors.TagIndex()
+
+    new_note_list = tag_index.process(note_list)
+
+    assert len(tag_index.tags.keys()) == 2
+    assert tag_index.tags['tag1'] == {note for note in note_list}
+    assert tag_index.tags['tag2'] == {note_list[1]}
+
+
 def make_test_notes():
     note1 = note_builder.Note(name='note_1',
-                              content='# Note 1\n\ncontent\n')
+                              content='# Note 1\n\n;;tag1\ncontent\n')
     note2 = note_builder.Note(name='note_2',
-                              content='# Second Note\nSome new content\n')
+                              content='# Second Note\n;;tag1 ;;tag2\nSome new content\n')
     return [note1, note2]

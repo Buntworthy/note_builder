@@ -1,4 +1,5 @@
 from collections import namedtuple
+from collections import defaultdict
 import re
 import os
 from datetime import datetime
@@ -125,3 +126,27 @@ class Quantifier(object):
             )
             template = env.get_template('statistics.html')
             out_file.write(template.render(graphs=graph_names))
+
+
+class TagIndex(object):
+
+    def __init__(self):
+        self.tags = defaultdict(set)
+
+    def process(self, notes):
+        for note in notes:
+            note_tags = self._find_tags(note)
+            self._add_to_tags(note_tags, note)
+        return notes
+
+    def _find_tags(self, note):
+        tags = []
+        for line in note.content.splitlines():
+            for word in line.split():
+                if word.startswith(';;'):
+                    tags.append(word[2:])
+        return tags
+
+    def _add_to_tags(self, note_tags, note):
+        for tag in note_tags:
+            self.tags[tag].add(note)
