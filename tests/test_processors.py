@@ -108,6 +108,16 @@ def test_tag_index_process():
     assert tag_index.tags['tag2'] == {note_list[1]}
 
 
+def test_tag_index_output(tmpdir):
+    note_list = make_test_notes()
+    tag_index = note_builder.processors.TagIndex()
+
+    tag_index.process(note_list)
+    tag_index.render(tmpdir, [])
+
+    assert os.path.isfile(tmpdir.join('tag_index.html'))
+
+
 def make_test_notes():
     note1 = note_builder.Note(name='note_1',
                               content='# Note 1\n\n;;tag1\ncontent\n')

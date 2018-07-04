@@ -132,12 +132,16 @@ class TagIndex(object):
 
     def __init__(self):
         self.tags = defaultdict(set)
+        self.output_name = 'tag_index.html'
 
     def process(self, notes):
         for note in notes:
             note_tags = self._find_tags(note)
             self._add_to_tags(note_tags, note)
         return notes
+
+    def render(self, directory, _):
+        self._make_html(directory)
 
     def _find_tags(self, note):
         tags = []
@@ -150,3 +154,13 @@ class TagIndex(object):
     def _add_to_tags(self, note_tags, note):
         for tag in note_tags:
             self.tags[tag].add(note)
+
+    def _make_html(self, directory):
+        output_path = os.path.join(directory, self.output_name)
+        with open(output_path, 'w') as out_file:
+            env = Environment(
+                loader=PackageLoader('note_builder', 'templates'),
+                autoescape=select_autoescape(['html', 'xml'])
+            )
+            template = env.get_template('tag_index.html')
+            out_file.write(template.render(tags=self.tags))

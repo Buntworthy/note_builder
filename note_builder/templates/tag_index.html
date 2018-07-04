@@ -1,0 +1,10 @@
+<html>
+  <body>
+    <h1>Tags</h1>
+    <ul>
+      {% for tag in tags %}
+      <li><a href="{{ 'tagged-' + tag + '.html' }}">{{ tag }}</a></li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>
