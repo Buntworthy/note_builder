@@ -88,15 +88,6 @@ def test_quantifier_output(tmpdir):
     assert os.path.isfile(tmpdir.join('statistics.html'))
 
 
-def test_tag_index_notes_unchanged():
-    note_list = make_test_notes()
-    tag_index = note_builder.processors.TagIndex()
-
-    new_note_list = tag_index.process(note_list)
-
-    assert new_note_list == note_list
-
-
 def test_tag_index_process():
     note_list = make_test_notes()
     tag_index = note_builder.processors.TagIndex()
@@ -106,6 +97,15 @@ def test_tag_index_process():
     assert len(tag_index.tags.keys()) == 2
     assert tag_index.tags['tag1'] == {note for note in note_list}
     assert tag_index.tags['tag2'] == {note_list[1]}
+
+
+def test_tag_index_transform():
+    note_list = make_test_notes()
+    tag_index = note_builder.processors.TagIndex()
+
+    new_note_list = tag_index.process(note_list)
+
+    assert new_note_list[0].content == '# Note 1\n\n[tag1](tagged-tag1.html)\ncontent\n'
 
 
 def test_tag_index_output(tmpdir):

@@ -1,0 +1,10 @@
+<html>
+  <body>
+    <h1>Notes tagged</h1>
+    <ul>
+      {% for note in notes %}
+      <li><a href="{{ note.name + '.html' }}">{{ note.name }}</a></li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>
