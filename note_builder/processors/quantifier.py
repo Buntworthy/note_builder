@@ -95,6 +95,7 @@ class Quantifier(object):
         }
 
     def process(self, notes):
+        print(f'Measuring {len(notes)} notes')
         measurement = measure_notes(notes)
         self.db.record(measurement)
         return notes
@@ -104,8 +105,9 @@ class Quantifier(object):
         graph_names = []
 
         for (name, func) in self.statistics.items():
+            print('Making graph ' + name)
             filepath = os.path.join(directory, name + '.svg')
-            graph_names.append(filepath)
+            graph_names.append(name + '.svg')
             self._make_chart(filepath, name, func(data))
 
         self._make_html(directory, graph_names)
