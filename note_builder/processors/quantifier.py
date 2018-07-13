@@ -95,12 +95,15 @@ class Quantifier(object):
         }
 
     def process(self, notes):
-        print(f'Measuring {len(notes)} notes')
+        print(f'Measuring {len(notes)} notes.')
+
         measurement = measure_notes(notes)
         self.db.record(measurement)
         return notes
 
     def render(self, directory, _):
+        print('Rendering statistics page.')
+
         data = self.db.load()
         graph_names = []
 

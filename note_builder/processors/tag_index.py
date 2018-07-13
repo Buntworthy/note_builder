@@ -18,6 +18,8 @@ class TagIndex(object):
         )
 
     def process(self, notes):
+        print(f'Extracting tags from {len(notes)} notes.')
+
         new_notes = []
         for note in notes:
             note_tags = self._find_tags(note)
@@ -27,6 +29,8 @@ class TagIndex(object):
         return new_notes
 
     def render(self, directory, _):
+        print('Rendering tag pages.')
+        
         self._make_index_html(directory)
         self._make_tag_page_html(directory)
 

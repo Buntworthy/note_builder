@@ -1,11 +1,12 @@
 import note_builder as nb
+import os
 
 datadir = '..'
-output_dir = '/mnt/c/Temp'
+output_dir = '../_build'
 note_files = nb.find_notes(datadir)
 notes = nb.load_notes(note_files)
-renderer = nb.HtmlRenderer(assets='../assets')
-quantifier = nb.processors.Quantifier('test_db')
+renderer = nb.HtmlRenderer(assets=os.path.join(datadir, 'assets'))
+quantifier = nb.processors.Quantifier(os.path.join(datadir, 'stats_db'))
 tagger = nb.processors.TagIndex()
 
 builder = nb.Builder()
