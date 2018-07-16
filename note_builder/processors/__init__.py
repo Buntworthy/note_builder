@@ -1,3 +1,4 @@
+from .gallery import Gallery
 from .tag_index import TagIndex
 from .quantifier import Quantifier
 from .quantifier import Measurement

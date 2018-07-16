@@ -1,0 +1,11 @@
+<html>
+  <body>
+    <h1>Images</h1>
+    <ul>
+    {% for image in images %}
+      <a href="{{ image[1].name + '.html' }}">
+        <img src="{{ image[0] }}" width=200px /></a>
+    {% endfor %}
+    </ul>
+  </body>
+</html>
