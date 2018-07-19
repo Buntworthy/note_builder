@@ -12,11 +12,11 @@ gallery = nb.processors.Gallery()
 
 builder = nb.Builder()
 
-#builder.add_processor(quantifier)
+builder.add_processor(quantifier)
 builder.add_processor(tagger)
 builder.add_processor(gallery)
 
-#builder.add_renderer(quantifier)
+builder.add_renderer(quantifier)
 builder.add_renderer(tagger)
 builder.add_renderer(gallery)
 builder.add_renderer(renderer)

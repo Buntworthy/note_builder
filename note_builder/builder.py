@@ -1,4 +1,5 @@
 import os
+import shutil
 
 
 class Builder(object):
@@ -20,8 +21,12 @@ class Builder(object):
         return notes
 
     def render(self, directory, notes):
-        if not os.path.isdir(directory):
-            os.mkdir(directory)
+        self._clean(directory)
 
         for renderer in self.renderers:
             renderer.render(directory, notes)
+
+    def _clean(self, directory):
+        if os.path.isdir(directory):
+            shutil.rmtree(directory)
+        os.mkdir(directory)
