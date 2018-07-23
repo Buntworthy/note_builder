@@ -57,6 +57,16 @@ def test_html_content_no_style(datadir):
                 assert output == reference
 
 
+def test_html_content_custom_style(datadir):
+    note_path = datadir.join('note_1.md')
+    note = note_builder.make_note(note_path)
+    expected_name = note.name + '.html'
+    expected_filename = datadir.join(expected_name)
+
+    renderer = note_builder.HtmlRenderer(css='custom.css')
+    renderer.render(datadir, [note])
+
+
 def test_html_renderer_note_iterable(datadir):
     note_files = note_builder.find_notes(datadir)
     notes = note_builder.load_notes(note_files)

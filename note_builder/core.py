@@ -38,8 +38,9 @@ def load_notes(note_files):
 
 class HtmlRenderer(object):
 
-    def __init__(self, assets=None):
+    def __init__(self, assets=None, css=None):
         self.assets_path = assets
+        self.css = css
 
     def render(self, output_directory, notes):
         """Render a list of Notes to a particular directory."""
@@ -56,10 +57,15 @@ class HtmlRenderer(object):
 
     def render_to_file(self, content, filename):
         """Convert note content to html file."""
-        result = subprocess.run(['pandoc',
-                                 '-f', 'markdown',
-                                 '-t', 'html',
-                                 '-s', '-o', filename],
+        command = ['pandoc',
+                   '-f', 'markdown',
+                   '-t', 'html',
+                   '-s',]
+        if self.css:
+            for css_item in self.css:
+                command.extend(['--css', css_item])
+        command.extend(['-o', filename])
+        result = subprocess.run(command,
                                 input=content,
                                 encoding='utf-8',
                                 stdout=subprocess.PIPE)
