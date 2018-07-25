@@ -3,6 +3,7 @@ from glob import glob
 import os
 import subprocess
 
+
 class Note(object):
 
     def __init__(self, name, content):
@@ -69,7 +70,7 @@ class HtmlRenderer(object):
         command = ['pandoc',
                    '-f', 'markdown',
                    '-t', 'html',
-                   '-s',]
+                   '-s', ]
         if self.css:
             for css_item in self.css:
                 command.extend(['--css', css_item])

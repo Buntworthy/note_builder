@@ -30,7 +30,7 @@ class TagIndex(object):
 
     def render(self, directory, _):
         print('Rendering tag pages.')
-        
+
         self._make_index_html(directory)
         self._make_tag_page_html(directory)
 
