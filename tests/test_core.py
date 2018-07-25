@@ -18,6 +18,7 @@ def test_load_single_note(datadir):
 
     assert note.name == 'note_1'
     assert note.content == '# Note 1\n\ncontent\n'
+    assert note.title == 'Note 1'
 
 
 def test_load_multiple_notes(datadir):

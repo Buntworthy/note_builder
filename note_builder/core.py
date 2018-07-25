@@ -3,7 +3,16 @@ from glob import glob
 import os
 import subprocess
 
-Note = namedtuple('Note', ['name', 'content'])
+class Note(object):
+
+    def __init__(self, name, content):
+        self.name = name
+        self.content = content
+        self.title = self._get_title(content)
+
+    def _get_title(self, content):
+        content_line = self.content.splitlines()
+        return content_line[0].lstrip('# ')
 
 
 def find_notes(directory):
