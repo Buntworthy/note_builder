@@ -1,12 +1,16 @@
 import note_builder as nb
-import os
 
-datadir = '..'
-assets = os.path.join(datadir, 'assets')
-css_relative = ['assets/css/tufte.css',
-                'assets/css/custom.css']
+import os
+import json
+
+with open('config.json', 'r') as read_file:
+    config = json.load(read_file)
+
+datadir = '.'
+assets = os.path.join(datadir, config['assets'])
+css_relative = config['css']
 css = [os.path.join(datadir, css_file) for css_file in css_relative]
-output_dir = '../_build'
+output_dir = config['output']
 
 
 note_files = nb.find_notes(datadir)
