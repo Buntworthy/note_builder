@@ -8,6 +8,7 @@ pygal = "*"
 "jinja2" = "*"
 pytest = "*"
 tinydb = "*"
+click = "*"
 
 [dev-packages]
 ptpython = "*"
