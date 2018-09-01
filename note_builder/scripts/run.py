@@ -7,20 +7,16 @@ import click
 @click.command()
 @click.option('--stats/--no-stats', default=True)
 def build(stats):
-    with open('config.json', 'r') as read_file:
-        config = json.load(read_file)
+    try:
+        config = nb.parse_config()
+    except FileNotFoundError:
+        print('No config file in current directory.')
+        return
 
-    datadir = '.'
-    assets = os.path.join(datadir, config['assets'])
-    css_relative = config['css']
-    css = [os.path.join(datadir, css_file) for css_file in css_relative]
-    output_dir = config['output']
-
-
-    note_files = nb.find_notes(datadir)
+    note_files = nb.find_notes(config['datadir'])
     notes = nb.load_notes(note_files)
-    renderer = nb.HtmlRenderer(assets=assets, css=css)
-    quantifier = nb.processors.Quantifier(os.path.join(datadir, 'stats_db'))
+    renderer = nb.HtmlRenderer(assets=config['assets'], css=config['css'])
+    quantifier = nb.processors.Quantifier(os.path.join(config['datadir'], 'stats_db'))
     tagger = nb.processors.TagIndex()
     gallery = nb.processors.Gallery()
 
@@ -40,7 +36,7 @@ def build(stats):
     builder.add_renderer(renderer)
 
     notes = builder.process(notes)
-    builder.render(output_dir, notes)
+    builder.render(config['output_dir'], notes)
 
 if __name__ == '__main__':
     build()

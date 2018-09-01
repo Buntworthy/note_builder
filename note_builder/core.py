@@ -2,6 +2,7 @@ from collections import namedtuple
 from glob import glob
 import os
 import subprocess
+import json
 
 
 class Note(object):
@@ -85,3 +86,18 @@ class HtmlRenderer(object):
         destination_location = os.path.join(output_directory,
                                             assets_folder_name)
         subprocess.run(['cp', '-r', self.assets_path, destination_location])
+
+def parse_config():
+    if not os.path.isfile('config.json'):
+        raise FileNotFoundError('Config file not found.')
+
+    with open('config.json', 'r') as read_file:
+        raw_config = json.load(read_file)
+
+    config = dict()
+    config['datadir'] = '.'
+    config['assets'] = os.path.join(config['datadir'], raw_config['assets'])
+    css_relative = raw_config['css']
+    config['css'] = [os.path.join(config['datadir'], css_file) for css_file in css_relative]
+    config['output_dir'] = raw_config['output']
+    return config
