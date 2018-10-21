@@ -1,20 +1,25 @@
 atomicwrites==1.1.5
 attrs==18.1.0
+beautifulsoup4==4.6.3
 click==6.7
+decorator==4.3.0
 docopt==0.6.2
 jedi==0.12.0
 Jinja2==2.10
 MarkupSafe==1.0
 more-itertools==4.2.0
--e git+https://github.com/justinpinkney/note_builder.git@0fc6c90d7d9a96e2c0cffcdedd1253aa244febfb#egg=note_builder
+networkx==2.2
+-e git+https://github.com/justinpinkney/note_builder.git@e9b449e356297dc2642cec2258c4be7fc5eebafa#egg=note_builder
 parso==0.2.1
 pluggy==0.7.1
 prompt-toolkit==1.0.15
 ptpython==0.41
 py==1.5.4
 pycodestyle==2.4.0
+pydot==1.2.4
 pygal==2.4.0
 Pygments==2.2.0
+pyparsing==2.2.2
 pytest==3.6.4
 six==1.11.0
 tinydb==3.10.0
