@@ -12,6 +12,6 @@ setup(
     ],
     entry_points='''
         [console_scripts]
-        note_builder=note_builder.scripts.run:build
+        note-builder=note_builder.scripts.run:build
     ''',
 )
